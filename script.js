@@ -1,136 +1,189 @@
-// ========== CUSTOMIZATION VARIABLES ==========
-// Change these variables to personalize the birthday message
-const BIRTHDAY_PERSON_NAME = "Papa";  // Change this to the person's name
-const CUSTOM_MESSAGE = "Happy Birthday papa i love you very much and hope you have an awesome day"; // Change this to your custom message
+// ========================================
+// EDIT THESE VARIABLES TO CUSTOMIZE YOUR PORTFOLIO
+// ========================================
 
-// Number of pictures you have (pic1.jpg, pic2.jpg, etc.)
-const NUMBER_OF_PICTURES = 5;
-// ============================================
+// Personal Information
+const greeting = "Hi There,";
+const firstName = "I'm Connor";
+const lastName = "Pace";
 
-// Initialize the page with custom content
-document.addEventListener('DOMContentLoaded', function() {
-    // Update the birthday title with the person's name
-    const titleElement = document.getElementById('birthday-title');
-    titleElement.textContent = `🎉 Happy Birthday ${BIRTHDAY_PERSON_NAME}! 🎂`;
+// Social Media Links
+const linkedinUrl = "https://www.linkedin.com/in/yourprofile";
+const githubUrl = "https://github.com/yourprofile";
+const instagramUrl = "https://www.instagram.com/yourprofile";
+const whatsappUrl = "https://wa.me/1234567890"; // Replace with your WhatsApp number
+
+// Section Content
+const sections = {
+    about: {
+        title: "About Me",
+        content: "This is the About section. Add your bio and information here."
+    },
+    skills: {
+        title: "Skills",
+        content: "This is the Skills section. Add your skills here."
+    },
+    education: {
+        title: "Education",
+        content: "This is the Education section. Add your educational background here."
+    },
+    work: {
+        title: "Work",
+        content: "This is the Work section. Add your projects and work here."
+    },
+    experience: {
+        title: "Experience",
+        content: "This is the Experience section. Add your work experience here."
+    },
+    contact: {
+        title: "Contact",
+        content: "This is the Contact section. Add your contact information here."
+    }
+};
+
+// ========================================
+// DO NOT EDIT BELOW THIS LINE
+// ========================================
+
+// Update content on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Update hero section
+    document.getElementById('greeting').textContent = greeting;
+    document.getElementById('firstName').textContent = firstName;
+    document.getElementById('lastName').textContent = lastName;
+
+    // Update social media links
+    document.getElementById('linkedinLink').href = linkedinUrl;
+    document.getElementById('githubLink').href = githubUrl;
+    document.getElementById('instagramLink').href = instagramUrl;
+    document.getElementById('whatsappLink').href = whatsappUrl;
+
+    // Update sections
+    document.getElementById('aboutTitle').textContent = sections.about.title;
+    document.getElementById('aboutContent').textContent = sections.about.content;
     
-    // Update the custom message
-    const messageElement = document.getElementById('custom-message');
-    messageElement.textContent = `🌟 ${CUSTOM_MESSAGE} 🌟`;
+    document.getElementById('skillsTitle').textContent = sections.skills.title;
+    document.getElementById('skillsContent').textContent = sections.skills.content;
     
-    // Initialize stars
-    createStars();
+    document.getElementById('educationTitle').textContent = sections.education.title;
+    document.getElementById('educationContent').textContent = sections.education.content;
     
-    // Auto-celebrate every 15 seconds
-    setInterval(() => {
-        if (Math.random() < 0.3) {
-            createConfetti();
-        }
-    }, 15000);
+    document.getElementById('workTitle').textContent = sections.work.title;
+    document.getElementById('workContent').textContent = sections.work.content;
+    
+    document.getElementById('experienceTitle').textContent = sections.experience.title;
+    document.getElementById('experienceContent').textContent = sections.experience.content;
+    
+    document.getElementById('contactTitle').textContent = sections.contact.title;
+    document.getElementById('contactContent').textContent = sections.contact.content;
 });
 
-// Create twinkling stars
-function createStars() {
-    const starsContainer = document.getElementById('stars');
-    for (let i = 0; i < 50; i++) {
-        const star = document.createElement('div');
-        star.className = 'star';
-        star.innerHTML = '✨';
-        star.style.left = Math.random() * 100 + '%';
-        star.style.top = Math.random() * 100 + '%';
-        star.style.animationDelay = Math.random() * 2 + 's';
-        starsContainer.appendChild(star);
+// Network animation
+const canvas = document.getElementById('networkCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const particles = [];
+const particleCount = 50;
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.radius = 3;
+    }
+
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(59, 91, 219, 0.5)';
+        ctx.fill();
     }
 }
 
-// Create regular confetti
-function createConfetti() {
-    const colors = ['#ff6b6b', '#4ecdc4', '#ffd93d', '#fd79a8', '#6c5ce7'];
-    for (let i = 0; i < 50; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDelay = Math.random() * 2 + 's';
-            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            document.body.appendChild(confetti);
-            
-            setTimeout(() => {
-                confetti.remove();
-            }, 5000);
-        }, i * 50);
-    }
+for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
 }
 
-// Create falling pictures
-function createFallingPictures() {
-    for (let i = 0; i < NUMBER_OF_PICTURES; i++) {
-        // Create multiple instances of each picture for a fuller effect
-        for (let j = 0; j < 4; j++) {
-            setTimeout(() => {
-                const picture = document.createElement('div');
-                picture.className = 'falling-picture';
-                
-                // Create img element
-                const img = document.createElement('img');
-                img.src = `pic${i + 1}.jpg`; // pic1.jpg, pic2.jpg, etc.
-                img.alt = `Memory ${i + 1}`;
-                
-                // Handle image load error
-                img.onerror = function() {
-                    console.warn(`Could not load pic${i + 1}.jpg`);
-                    picture.remove();
-                };
-                
-                picture.appendChild(img);
-                
-                // Random positioning and animation
-                picture.style.left = Math.random() * 100 + '%';
-                picture.style.animationDelay = Math.random() * 2 + 's';
-                picture.style.animationDuration = (Math.random() * 4 + 3) + 's';
-                
-                // Random rotation
-                const randomRotation = Math.random() * 360;
-                picture.style.setProperty('--rotation', randomRotation + 'deg');
-                
-                document.body.appendChild(picture);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    if (picture.parentNode) {
-                        picture.remove();
-                    }
-                }, 7000);
-            }, (i * 4 + j) * 200); // Stagger the pictures
+function connectParticles() {
+    for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            if (distance < 150) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                ctx.strokeStyle = `rgba(59, 91, 219, ${0.2 * (1 - distance / 150)})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
         }
     }
 }
 
-// Blow out candles
-function blowCandles() {
-    const flames = document.querySelectorAll('.flame');
-    flames.forEach((flame, index) => {
-        setTimeout(() => {
-            flame.style.opacity = '0';
-            flame.style.transform = 'translateX(-50%) scale(0)';
-        }, index * 200);
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(particle => {
+        particle.update();
+        particle.draw();
     });
-    
-    setTimeout(() => {
-        alert(`🎉 Make a wish, ${BIRTHDAY_PERSON_NAME}! 🌟`);
-        flames.forEach(flame => {
-            flame.style.opacity = '1';
-            flame.style.transform = 'translateX(-50%) scale(1)';
-        });
-    }, 1500);
+
+    connectParticles();
+
+    requestAnimationFrame(animate);
 }
 
-// Main celebration function
-function celebrate() {
-    createConfetti();
-    createFallingPictures();
-    
-    // Optional: Play a celebration sound effect (uncomment if you have an audio file)
-    // const audio = new Audio('celebration.mp3');
-    // audio.play().catch(e => console.log('Audio playback failed:', e));
-}
+animate();
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+// Smooth scroll for navigation
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+
+// Active nav link on scroll
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        if (scrollY >= sectionTop - 60) {
+            current = section.getAttribute('id');
+        }
+    });
+
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
+    });
+});
